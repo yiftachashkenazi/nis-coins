@@ -1,36 +1,60 @@
-# NIS Coins Dataset
+# YOLOv8 Israeli Coin Detector
 
-This repository contains a collection of high-resolution images of Israeli coins (New Israeli Shekel – NIS) for the purpose of labeling, training image classifiers, or visual documentation.
+## Project Overview
+This project implements a coin detection and sum evaluation system for Israeli coins using YOLOv8 for object detection and OpenCV for circle detection and refinement. The goal is to accurately identify and count Israeli coins in images, and then calculate their total value.
 
-## 📁 Folder Structure & Contribution Guidelines
+## Attribution
+Developed by Yiftach Ashlekanzi as part of the Google × Reichman Artificial‑Intelligence & Deep‑Learning Development Program.
 
-The main folder `images/` contains all coin images, organized by denomination.
+## Project Structure
+- `images/from data set/Israeli-coins-detected-3/`: Original dataset with train, valid, and test splits.
+- `merged_output/`: Contains the merged COCO annotations and all images consolidated from the original dataset splits.
+- `yolo_dataset/`: Formatted dataset in YOLO format, including `data.yaml` configuration, images, and labels for train, validation, and test sets.
+- `yolo_runs/`: Directory where YOLOv8 training logs, weights, and results are stored.
+- `merge_dataset.py`: Python script to merge the original COCO datasets into a single, unified dataset.
+- `yolo_coin_detector_v2.py`: The main script for YOLOv8 model training and evaluation, including OpenCV-based circle filtering.
+- `yolo_coin_detector_v2_gpu.py`: GPU-optimized version for M1 Mac with MPS acceleration (recommended for faster training).
+- `requirements.txt`: Lists all Python dependencies required to run the project.
+- `error_analysis_table.csv`: Output CSV file containing detailed error analysis after model evaluation.
 
-If you'd like to contribute photos:
+## Setup and Installation
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository_url>
+    cd nis-coins
+    ```
+2.  **Install dependencies:**
+    It is recommended to use a virtual environment.
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-- Please create **your own subfolder** under `images/` using your name or identifier.
-- Add only **clear, high-resolution images**.
-- Label your images according to the following format:
+## Usage
+1.  **Prepare the dataset:**
+    First, run the `merge_dataset.py` script to consolidate the annotation files and images.
+    ```bash
+    python merge_dataset.py
+    ```
+2.  **Train and evaluate the YOLOv8 model:**
+    After preparing the dataset, run the main YOLOv8 script to start training and evaluation.
+    
+    **For M1 Mac users (recommended):**
+    ```bash
+    conda activate yolo-gpu
+    python yolo_coin_detector_v2_gpu.py
+    ```
+    
+    **For other systems:**
+    ```bash
+    python yolo_coin_detector_v2.py
+    ```
+    
+    The training progress will be logged in the `yolo_runs` directory, and an `error_analysis_table.csv` will be generated upon completion.
 
-### 🏷️ Coin Class Naming Convention:
+## Results
+Upon completion of the `yolo_coin_detector_v2.py` script, an `error_analysis_table.csv` will be generated in the root directory, providing a detailed breakdown of prediction errors and accuracy metrics.
 
-| Coin Value | Class Name         |
-|------------|--------------------|
-| 1 Shekel   | `One`              |
-| 2 Shekels  | `Two` *(or Shnekel)* |
-| 5 Shekels  | `Five`             |
-| 10 Shekels | `Ten`              |
-
-Use these class names **exactly as written** to ensure consistent model training.
-
-### 🔍 Unlabeled Images
-
-- If you're unsure about the coin value, place the image in the `withoutlabels` subfolder.
-- Others can help verify and move it to the correct category.
-
-nis-coins/
-├── images/             # Each contributor creates a subfolder here
-│   ├── yiftach/
-│   └──you... 
-├── withoutlabels/      # For images without classification
-└── README.md
+## Future Work
+- Improve model accuracy with further hyperparameter tuning and data augmentation.
+- Explore real-time coin detection and sum calculation from video streams.
+- Implement a user interface for easier interaction and visualization of results.

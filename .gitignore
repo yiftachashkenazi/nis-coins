@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.log
+
+# Datasets and Models
+yolo_dataset/
+merged_output/
+yolo_runs/
+error_analysis_table.csv
+
+# Environment
+.venv/
+virtualenv/
+env/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store 
